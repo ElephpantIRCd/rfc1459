@@ -1,0 +1,24 @@
+{
+    "name": "elephpantircd/rfc1459",
+    "description": "RFC1459 Plugin for elephpantircd/irc-server",
+    "type": "elephpantircd-plugin",
+    "require": {
+        "elephpantircd/framework": "^1.0@dev"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Navarr Barnier",
+            "email": "me@navarr.me"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "ElephpantIRCd\\RFC1459\\": "src/"
+        },
+        "files": [
+            "registration.php"
+        ]
+    },
+    "minimum-stability": "dev"
+}
