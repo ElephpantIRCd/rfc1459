@@ -13,7 +13,7 @@ class Nick implements CommandInterface
     {
         echo 'Nick Command Registered',PHP_EOL;
         $nickCommand = new static();
-        $hookable->addHook('NICK', [$nickCommand, 'execute']);
+        $hookable->addHook('MESSAGE_NICK', [$nickCommand, 'execute']);
     }
 
     public function execute(array $data)

@@ -5,6 +5,7 @@ use ElephpantIRCd\RFC1459\Command\Nick;
 use ElephpantIRCd\Connection;
 use ElephpantIRCd\Hookable;
 use ElephpantIRCd\PluginInterface;
+use ElephpantIRCd\RFC1459\Command\User;
 use ElephpantIRCd\RFC1459\Message\AbstractMessage;
 use ElephpantIRCd\Server;
 
@@ -14,11 +15,11 @@ class Plugin implements PluginInterface
 
     public static function register(Server $server)
     {
-        echo 'RFC1459 Plugin Registered Successfully', PHP_EOL;
         $plugin = new static();
         $server->addHook(Server::HOOK_CONNECT, [$plugin, 'onConnect']);
         $server->addHook(Server::HOOK_INPUT, [$plugin, 'onInput']);
 
+        User::register($plugin);
         Nick::register($plugin);
     }
 
@@ -27,11 +28,25 @@ class Plugin implements PluginInterface
         // Do things on connections
     }
 
+    public function triggerMessage(Server $server, Connection $connection, AbstractMessage $message)
+    {
+        $this->triggerHooks(
+            'MESSAGE_'.$message->getCommand(),
+            ['container' => new TriggerContainer($server, $connection, $message)]
+        );
+    }
+
+    public function triggerEvent($eventName, $data)
+    {
+        $this->triggerHooks(
+            'EVENT_'.$eventName,
+            $data
+        );
+    }
+
     public function onInput(Server $server, Connection $connection, $message)
     {
-        echo '[ IN] ', $message, PHP_EOL;
         $message = AbstractMessage::parse($message);
-        $container = new TriggerContainer($server, $connection, $message);
-        $this->triggerHooks($message->getCommand(), ['container' => $container]);
+        $this->triggerMessage($server, $connection, $message);
     }
 }
