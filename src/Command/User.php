@@ -1,6 +1,7 @@
 <?php
 namespace ElephpantIRCd\RFC1459\Command;
 
+use ElephpantIRCd\Hookable;
 use ElephpantIRCd\RFC1459\Routine\MOTD;
 use ElephpantIRCd\RFC1459\TriggerContainer;
 
@@ -12,7 +13,7 @@ class User implements CommandInterface
         $hookable->addHook('MESSAGE_USER', [$userCommand, 'execute']);
     }
 
-    public function execute(array $data)
+    public function execute($container, array $data)
     {
         /** @var TriggerContainer $trigger */
         $trigger = $data['container'];

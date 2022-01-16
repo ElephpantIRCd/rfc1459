@@ -16,7 +16,7 @@ class Nick implements CommandInterface
         $hookable->addHook('MESSAGE_NICK', [$nickCommand, 'execute']);
     }
 
-    public function execute(array $data)
+    public function execute($container, array $data)
     {
         $trigger = $data['container'];
         $message = $trigger->getMessage();
